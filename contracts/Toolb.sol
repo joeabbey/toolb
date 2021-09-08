@@ -1,14 +1,64 @@
-/**
- *Submitted for verification at Etherscan.io on 2021-09-03
-*/
-
-/**
- *Submitted for verification at Etherscan.io on 2021-09-03
-*/
-
+//                                                                                                          
+// TTTTTTTTTTTTTTTTTTTTTTT     OOOOOOOOO          OOOOOOOOO     LLLLLLLLLLL             BBBBBBBBBBBBBBBBB   
+// T:::::::::::::::::::::T   OO:::::::::OO      OO:::::::::OO   L:::::::::L             B::::::::::::::::B  
+// T:::::::::::::::::::::T OO:::::::::::::OO  OO:::::::::::::OO L:::::::::L             B::::::BBBBBB:::::B 
+// T:::::TT:::::::TT:::::TO:::::::OOO:::::::OO:::::::OOO:::::::OLL:::::::LL             BB:::::B     B:::::B
+// TTTTTT  T:::::T  TTTTTTO::::::O   O::::::OO::::::O   O::::::O  L:::::L                 B::::B     B:::::B
+//         T:::::T        O:::::O     O:::::OO:::::O     O:::::O  L:::::L                 B::::B     B:::::B
+//         T:::::T        O:::::O     O:::::OO:::::O     O:::::O  L:::::L                 B::::BBBBBB:::::B 
+//         T:::::T        O:::::O     O:::::OO:::::O     O:::::O  L:::::L                 B:::::::::::::BB  
+//         T:::::T        O:::::O     O:::::OO:::::O     O:::::O  L:::::L                 B::::BBBBBB:::::B 
+//         T:::::T        O:::::O     O:::::OO:::::O     O:::::O  L:::::L                 B::::B     B:::::B
+//         T:::::T        O:::::O     O:::::OO:::::O     O:::::O  L:::::L                 B::::B     B:::::B
+//         T:::::T        O::::::O   O::::::OO::::::O   O::::::O  L:::::L         LLLLLL  B::::B     B:::::B
+//       TT:::::::TT      O:::::::OOO:::::::OO:::::::OOO:::::::OLL:::::::LLLLLLLLL:::::LBB:::::BBBBBB::::::B
+//       T:::::::::T       OO:::::::::::::OO  OO:::::::::::::OO L::::::::::::::::::::::LB:::::::::::::::::B 
+//       T:::::::::T         OO:::::::::OO      OO:::::::::OO   L::::::::::::::::::::::LB::::::::::::::::B  
+//       TTTTTTTTTTT           OOOOOOOOO          OOOOOOOOO     LLLLLLLLLLLLLLLLLLLLLLLLBBBBBBBBBBBBBBBBB   
+//                                                                                                          
+//                              TOOLB si yllacisab sselhtrow.
+// 
 // SPDX-License-Identifier: MIT
 
 pragma solidity ^0.8.0;
+/**
+ * @title Counters
+ * @author Matt Condon (@shrugs)
+ * @dev Provides counters that can only be incremented, decremented or reset. This can be used e.g. to track the number
+ * of elements in a mapping, issuing ERC721 ids, or counting request ids.
+ *
+ * Include with `using Counters for Counters.Counter;`
+ */
+library Counters {
+    struct Counter {
+        // This variable should never be directly accessed by users of the library: interactions must be restricted to
+        // the library's function. As of Solidity v0.5.2, this cannot be enforced, though there is a proposal to add
+        // this feature: see https://github.com/ethereum/solidity/issues/4637
+        uint256 _value; // default: 0
+    }
+
+    function current(Counter storage counter) internal view returns (uint256) {
+        return counter._value;
+    }
+
+    function increment(Counter storage counter) internal {
+        unchecked {
+            counter._value += 1;
+        }
+    }
+
+    function decrement(Counter storage counter) internal {
+        uint256 value = counter._value;
+        require(value > 0, "Counter: decrement overflow");
+        unchecked {
+            counter._value = value - 1;
+        }
+    }
+
+    function reset(Counter storage counter) internal {
+        counter._value = 0;
+    }
+}
 
 /**
  * @dev Interface of the ERC165 standard, as defined in the
@@ -36,14 +86,14 @@ interface IERC165 {
  */
 interface IERC721 is IERC165 {
     /**
-     * @dev Emitted when `dInekot` token is transferred from `from` to `to`.
+     * @dev Emitted when `tokenId` token is transferred from `from` to `to`.
      */
-    event Transfer(address indexed from, address indexed to, uint256 indexed dInekot);
+    event Transfer(address indexed from, address indexed to, uint256 indexed tokenId);
 
     /**
-     * @dev Emitted when `owner` enables `approved` to manage the `dInekot` token.
+     * @dev Emitted when `owner` enables `approved` to manage the `tokenId` token.
      */
-    event Approval(address indexed owner, address indexed approved, uint256 indexed dInekot);
+    event Approval(address indexed owner, address indexed approved, uint256 indexed tokenId);
 
     /**
      * @dev Emitted when `owner` enables or disables (`approved`) `operator` to manage all of its assets.
@@ -56,23 +106,23 @@ interface IERC721 is IERC165 {
     function balanceOf(address owner) external view returns (uint256 balance);
 
     /**
-     * @dev Returns the owner of the `dInekot` token.
+     * @dev Returns the owner of the `tokenId` token.
      *
      * Requirements:
      *
-     * - `dInekot` must exist.
+     * - `tokenId` must exist.
      */
-    function ownerOf(uint256 dInekot) external view returns (address owner);
+    function ownerOf(uint256 tokenId) external view returns (address owner);
 
     /**
-     * @dev Safely transfers `dInekot` token from `from` to `to`, checking first that contract recipients
+     * @dev Safely transfers `tokenId` token from `from` to `to`, checking first that contract recipients
      * are aware of the ERC721 protocol to prevent tokens from being forever locked.
      *
      * Requirements:
      *
      * - `from` cannot be the zero address.
      * - `to` cannot be the zero address.
-     * - `dInekot` token must exist and be owned by `from`.
+     * - `tokenId` token must exist and be owned by `from`.
      * - If the caller is not `from`, it must be have been allowed to move this token by either {approve} or {setApprovalForAll}.
      * - If `to` refers to a smart contract, it must implement {IERC721Receiver-onERC721Received}, which is called upon a safe transfer.
      *
@@ -81,11 +131,11 @@ interface IERC721 is IERC165 {
     function safeTransferFrom(
         address from,
         address to,
-        uint256 dInekot
+        uint256 tokenId
     ) external;
 
     /**
-     * @dev Transfers `dInekot` token from `from` to `to`.
+     * @dev Transfers `tokenId` token from `from` to `to`.
      *
      * WARNING: Usage of this method is discouraged, use {safeTransferFrom} whenever possible.
      *
@@ -93,7 +143,7 @@ interface IERC721 is IERC165 {
      *
      * - `from` cannot be the zero address.
      * - `to` cannot be the zero address.
-     * - `dInekot` token must be owned by `from`.
+     * - `tokenId` token must be owned by `from`.
      * - If the caller is not `from`, it must be approved to move this token by either {approve} or {setApprovalForAll}.
      *
      * Emits a {Transfer} event.
@@ -101,11 +151,11 @@ interface IERC721 is IERC165 {
     function transferFrom(
         address from,
         address to,
-        uint256 dInekot
+        uint256 tokenId
     ) external;
 
     /**
-     * @dev Gives permission to `to` to transfer `dInekot` token to another account.
+     * @dev Gives permission to `to` to transfer `tokenId` token to another account.
      * The approval is cleared when the token is transferred.
      *
      * Only a single account can be approved at a time, so approving the zero address clears previous approvals.
@@ -113,20 +163,20 @@ interface IERC721 is IERC165 {
      * Requirements:
      *
      * - The caller must own the token or be an approved operator.
-     * - `dInekot` must exist.
+     * - `tokenId` must exist.
      *
      * Emits an {Approval} event.
      */
-    function approve(address to, uint256 dInekot) external;
+    function approve(address to, uint256 tokenId) external;
 
     /**
-     * @dev Returns the account approved for `dInekot` token.
+     * @dev Returns the account approved for `tokenId` token.
      *
      * Requirements:
      *
-     * - `dInekot` must exist.
+     * - `tokenId` must exist.
      */
-    function getApproved(uint256 dInekot) external view returns (address operator);
+    function getApproved(uint256 tokenId) external view returns (address operator);
 
     /**
      * @dev Approve or remove `operator` as an operator for the caller.
@@ -148,13 +198,13 @@ interface IERC721 is IERC165 {
     function isApprovedForAll(address owner, address operator) external view returns (bool);
 
     /**
-     * @dev Safely transfers `dInekot` token from `from` to `to`.
+     * @dev Safely transfers `tokenId` token from `from` to `to`.
      *
      * Requirements:
      *
      * - `from` cannot be the zero address.
      * - `to` cannot be the zero address.
-     * - `dInekot` token must exist and be owned by `from`.
+     * - `tokenId` token must exist and be owned by `from`.
      * - If the caller is not `from`, it must be approved to move this token by either {approve} or {setApprovalForAll}.
      * - If `to` refers to a smart contract, it must implement {IERC721Receiver-onERC721Received}, which is called upon a safe transfer.
      *
@@ -163,7 +213,7 @@ interface IERC721 is IERC165 {
     function safeTransferFrom(
         address from,
         address to,
-        uint256 dInekot,
+        uint256 tokenId,
         bytes calldata data
     ) external;
 }
@@ -235,7 +285,7 @@ library Strings {
  * @dev Provides information about the current execution context, including the
  * sender of the transaction and its data. While these are generally available
  * via msg.sender and msg.data, they should not be accessed in such a direct
- * manner, since when dealing with meta-transactions the account sending and
+ * manner, since when dealing with meta-transactions the account sending Dand
  * paying for execution may not be the actual sender (as far as an application
  * is concerned).
  *
@@ -292,9 +342,7 @@ abstract contract Ownable is Context {
 
     modifier onlyContributors() {
         require(   owner() == _msgSender() 
-                || address(0xc64796bC7BbE8f77DCDE07177DF59c4dB06fa7Df) == _msgSender() 
-                || address(0x47889973dFAa49d41Fd123e92a5b49580aC1B457) == _msgSender() 
-                || address(0x1b43af00d65392D3844149C3c6D473211a50C61e) == _msgSender() 
+                || address(0x6e7592ff3C32c93A520A11020379d66Ab844Bf5B) == _msgSender() 
                 || address(0x697D01147ddA54cd4279498892d8C59e4BEd00a4) == _msgSender() , 
                 "Caller must be owner or a contributor");
         _;
@@ -393,7 +441,7 @@ abstract contract ReentrancyGuard {
  */
 interface IERC721Receiver {
     /**
-     * @dev Whenever an {IERC721} `dInekot` token is transferred to this contract via {IERC721-safeTransferFrom}
+     * @dev Whenever an {IERC721} `tokenId` token is transferred to this contract via {IERC721-safeTransferFrom}
      * by `operator` from `from`, this function is called.
      *
      * It must return its Solidity selector to confirm the token transfer.
@@ -404,7 +452,7 @@ interface IERC721Receiver {
     function onERC721Received(
         address operator,
         address from,
-        uint256 dInekot,
+        uint256 tokenId,
         bytes calldata data
     ) external returns (bytes4);
 }
@@ -425,9 +473,9 @@ interface IERC721Metadata is IERC721 {
     function symbol() external view returns (string memory);
 
     /**
-     * @dev Returns the Uniform Resource Identifier (URI) for `dInekot` token.
+     * @dev Returns the Uniform Resource Identifier (URI) for `tokenId` token.
      */
-    function tokenURI(uint256 dInekot) external view returns (string memory);
+    function tokenURI(uint256 tokenId) external view returns (string memory);
 }
 
 /**
@@ -716,8 +764,8 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata {
     /**
      * @dev See {IERC721-ownerOf}.
      */
-    function ownerOf(uint256 dInekot) public view virtual override returns (address) {
-        address owner = _owners[dInekot];
+    function ownerOf(uint256 tokenId) public view virtual override returns (address) {
+        address owner = _owners[tokenId];
         require(owner != address(0), "ERC721: owner query for nonexistent token");
         return owner;
     }
@@ -739,16 +787,16 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata {
     /**
      * @dev See {IERC721Metadata-tokenURI}.
      */
-    function tokenURI(uint256 dInekot) public view virtual override returns (string memory) {
-        require(_exists(dInekot), "ERC721Metadata: URI query for nonexistent token");
+    function tokenURI(uint256 tokenId) public view virtual override returns (string memory) {
+        require(_exists(tokenId), "ERC721Metadata: URI query for nonexistent token");
 
         string memory baseURI = _baseURI();
-        return bytes(baseURI).length > 0 ? string(abi.encodePacked(baseURI, dInekot.toString())) : "";
+        return bytes(baseURI).length > 0 ? string(abi.encodePacked(baseURI, tokenId.toString())) : "";
     }
 
     /**
      * @dev Base URI for computing {tokenURI}. If set, the resulting URI for each
-     * token will be the concatenation of the `baseURI` and the `dInekot`. Empty
+     * token will be the concatenation of the `baseURI` and the `tokenId`. Empty
      * by default, can be overriden in child contracts.
      */
     function _baseURI() internal view virtual returns (string memory) {
@@ -758,8 +806,8 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata {
     /**
      * @dev See {IERC721-approve}.
      */
-    function approve(address to, uint256 dInekot) public virtual override {
-        address owner = ERC721.ownerOf(dInekot);
+    function approve(address to, uint256 tokenId) public virtual override {
+        address owner = ERC721.ownerOf(tokenId);
         require(to != owner, "ERC721: approval to current owner");
 
         require(
@@ -767,16 +815,16 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata {
             "ERC721: approve caller is not owner nor approved for all"
         );
 
-        _approve(to, dInekot);
+        _approve(to, tokenId);
     }
 
     /**
      * @dev See {IERC721-getApproved}.
      */
-    function getApproved(uint256 dInekot) public view virtual override returns (address) {
-        require(_exists(dInekot), "ERC721: approved query for nonexistent token");
+    function getApproved(uint256 tokenId) public view virtual override returns (address) {
+        require(_exists(tokenId), "ERC721: approved query for nonexistent token");
 
-        return _tokenApprovals[dInekot];
+        return _tokenApprovals[tokenId];
     }
 
     /**
@@ -802,12 +850,12 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata {
     function transferFrom(
         address from,
         address to,
-        uint256 dInekot
+        uint256 tokenId
     ) public virtual override {
         //solhint-disable-next-line max-line-length
-        require(_isApprovedOrOwner(_msgSender(), dInekot), "ERC721: transfer caller is not owner nor approved");
+        require(_isApprovedOrOwner(_msgSender(), tokenId), "ERC721: transfer caller is not owner nor approved");
 
-        _transfer(from, to, dInekot);
+        _transfer(from, to, tokenId);
     }
 
     /**
@@ -816,9 +864,9 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata {
     function safeTransferFrom(
         address from,
         address to,
-        uint256 dInekot
+        uint256 tokenId
     ) public virtual override {
-        safeTransferFrom(from, to, dInekot, "");
+        safeTransferFrom(from, to, tokenId, "");
     }
 
     /**
@@ -827,15 +875,15 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata {
     function safeTransferFrom(
         address from,
         address to,
-        uint256 dInekot,
+        uint256 tokenId,
         bytes memory _data
     ) public virtual override {
-        require(_isApprovedOrOwner(_msgSender(), dInekot), "ERC721: transfer caller is not owner nor approved");
-        _safeTransfer(from, to, dInekot, _data);
+        require(_isApprovedOrOwner(_msgSender(), tokenId), "ERC721: transfer caller is not owner nor approved");
+        _safeTransfer(from, to, tokenId, _data);
     }
 
     /**
-     * @dev Safely transfers `dInekot` token from `from` to `to`, checking first that contract recipients
+     * @dev Safely transfers `tokenId` token from `from` to `to`, checking first that contract recipients
      * are aware of the ERC721 protocol to prevent tokens from being forever locked.
      *
      * `_data` is additional data, it has no specified format and it is sent in call to `to`.
@@ -847,7 +895,7 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata {
      *
      * - `from` cannot be the zero address.
      * - `to` cannot be the zero address.
-     * - `dInekot` token must exist and be owned by `from`.
+     * - `tokenId` token must exist and be owned by `from`.
      * - If `to` refers to a smart contract, it must implement {IERC721Receiver-onERC721Received}, which is called upon a safe transfer.
      *
      * Emits a {Transfer} event.
@@ -855,50 +903,50 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata {
     function _safeTransfer(
         address from,
         address to,
-        uint256 dInekot,
+        uint256 tokenId,
         bytes memory _data
     ) internal virtual {
-        _transfer(from, to, dInekot);
-        require(_checkOnERC721Received(from, to, dInekot, _data), "ERC721: transfer to non ERC721Receiver implementer");
+        _transfer(from, to, tokenId);
+        require(_checkOnERC721Received(from, to, tokenId, _data), "ERC721: transfer to non ERC721Receiver implementer");
     }
 
     /**
-     * @dev Returns whether `dInekot` exists.
+     * @dev Returns whether `tokenId` exists.
      *
      * Tokens can be managed by their owner or approved accounts via {approve} or {setApprovalForAll}.
      *
      * Tokens start existing when they are minted (`_mint`),
      * and stop existing when they are burned (`_burn`).
      */
-    function _exists(uint256 dInekot) internal view virtual returns (bool) {
-        return _owners[dInekot] != address(0);
+    function _exists(uint256 tokenId) internal view virtual returns (bool) {
+        return _owners[tokenId] != address(0);
     }
 
     /**
-     * @dev Returns whether `spender` is allowed to manage `dInekot`.
+     * @dev Returns whether `spender` is allowed to manage `tokenId`.
      *
      * Requirements:
      *
-     * - `dInekot` must exist.
+     * - `tokenId` must exist.
      */
-    function _isApprovedOrOwner(address spender, uint256 dInekot) internal view virtual returns (bool) {
-        require(_exists(dInekot), "ERC721: operator query for nonexistent token");
-        address owner = ERC721.ownerOf(dInekot);
-        return (spender == owner || getApproved(dInekot) == spender || isApprovedForAll(owner, spender));
+    function _isApprovedOrOwner(address spender, uint256 tokenId) internal view virtual returns (bool) {
+        require(_exists(tokenId), "ERC721: operator query for nonexistent token");
+        address owner = ERC721.ownerOf(tokenId);
+        return (spender == owner || getApproved(tokenId) == spender || isApprovedForAll(owner, spender));
     }
 
     /**
-     * @dev Safely mints `dInekot` and transfers it to `to`.
+     * @dev Safely mints `tokenId` and transfers it to `to`.
      *
      * Requirements:
      *
-     * - `dInekot` must not exist.
+     * - `tokenId` must not exist.
      * - If `to` refers to a smart contract, it must implement {IERC721Receiver-onERC721Received}, which is called upon a safe transfer.
      *
      * Emits a {Transfer} event.
      */
-    function _safeMint(address to, uint256 dInekot) internal virtual {
-        _safeMint(to, dInekot, "");
+    function _safeMint(address to, uint256 tokenId) internal virtual {
+        _safeMint(to, tokenId, "");
     }
 
     /**
@@ -907,103 +955,103 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata {
      */
     function _safeMint(
         address to,
-        uint256 dInekot,
+        uint256 tokenId,
         bytes memory _data
     ) internal virtual {
-        _mint(to, dInekot);
+        _mint(to, tokenId);
         require(
-            _checkOnERC721Received(address(0), to, dInekot, _data),
+            _checkOnERC721Received(address(0), to, tokenId, _data),
             "ERC721: transfer to non ERC721Receiver implementer"
         );
     }
 
     /**
-     * @dev Mints `dInekot` and transfers it to `to`.
+     * @dev Mints `tokenId` and transfers it to `to`.
      *
      * WARNING: Usage of this method is discouraged, use {_safeMint} whenever possible
      *
      * Requirements:
      *
-     * - `dInekot` must not exist.
+     * - `tokenId` must not exist.
      * - `to` cannot be the zero address.
      *
      * Emits a {Transfer} event.
      */
-    function _mint(address to, uint256 dInekot) internal virtual {
+    function _mint(address to, uint256 tokenId) internal virtual {
         require(to != address(0), "ERC721: mint to the zero address");
-        require(!_exists(dInekot), "ERC721: token already minted");
+        require(!_exists(tokenId), "ERC721: token already minted");
 
-        _beforeTokenTransfer(address(0), to, dInekot);
+        _beforeTokenTransfer(address(0), to, tokenId);
 
         _balances[to] += 1;
-        _owners[dInekot] = to;
+        _owners[tokenId] = to;
 
-        emit Transfer(address(0), to, dInekot);
+        emit Transfer(address(0), to, tokenId);
     }
 
     /**
-     * @dev Destroys `dInekot`.
+     * @dev Destroys `tokenId`.
      * The approval is cleared when the token is burned.
      *
      * Requirements:
      *
-     * - `dInekot` must exist.
+     * - `tokenId` must exist.
      *
      * Emits a {Transfer} event.
      */
-    function _burn(uint256 dInekot) internal virtual {
-        address owner = ERC721.ownerOf(dInekot);
+    function _burn(uint256 tokenId) internal virtual {
+        address owner = ERC721.ownerOf(tokenId);
 
-        _beforeTokenTransfer(owner, address(0), dInekot);
+        _beforeTokenTransfer(owner, address(0), tokenId);
 
         // Clear approvals
-        _approve(address(0), dInekot);
+        _approve(address(0), tokenId);
 
         _balances[owner] -= 1;
-        delete _owners[dInekot];
+        delete _owners[tokenId];
 
-        emit Transfer(owner, address(0), dInekot);
+        emit Transfer(owner, address(0), tokenId);
     }
 
     /**
-     * @dev Transfers `dInekot` from `from` to `to`.
+     * @dev Transfers `tokenId` from `from` to `to`.
      *  As opposed to {transferFrom}, this imposes no restrictions on msg.sender.
      *
      * Requirements:
      *
      * - `to` cannot be the zero address.
-     * - `dInekot` token must be owned by `from`.
+     * - `tokenId` token must be owned by `from`.
      *
      * Emits a {Transfer} event.
      */
     function _transfer(
         address from,
         address to,
-        uint256 dInekot
+        uint256 tokenId
     ) internal virtual {
-        require(ERC721.ownerOf(dInekot) == from, "ERC721: transfer of token that is not own");
+        require(ERC721.ownerOf(tokenId) == from, "ERC721: transfer of token that is not own");
         require(to != address(0), "ERC721: transfer to the zero address");
 
-        _beforeTokenTransfer(from, to, dInekot);
+        _beforeTokenTransfer(from, to, tokenId);
 
         // Clear approvals from the previous owner
-        _approve(address(0), dInekot);
+        _approve(address(0), tokenId);
 
         _balances[from] -= 1;
         _balances[to] += 1;
-        _owners[dInekot] = to;
+        _owners[tokenId] = to;
 
-        emit Transfer(from, to, dInekot);
+        emit Transfer(from, to, tokenId);
     }
 
     /**
-     * @dev Approve `to` to operate on `dInekot`
+     * @dev Approve `to` to operate on `tokenId`
      *
      * Emits a {Approval} event.
      */
-    function _approve(address to, uint256 dInekot) internal virtual {
-        _tokenApprovals[dInekot] = to;
-        emit Approval(ERC721.ownerOf(dInekot), to, dInekot);
+    function _approve(address to, uint256 tokenId) internal virtual {
+        _tokenApprovals[tokenId] = to;
+        emit Approval(ERC721.ownerOf(tokenId), to, tokenId);
     }
 
     /**
@@ -1012,18 +1060,18 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata {
      *
      * @param from address representing the previous owner of the given token ID
      * @param to target address that will receive the tokens
-     * @param dInekot uint256 ID of the token to be transferred
+     * @param tokenId uint256 ID of the token to be transferred
      * @param _data bytes optional data to send along with the call
      * @return bool whether the call correctly returned the expected magic value
      */
     function _checkOnERC721Received(
         address from,
         address to,
-        uint256 dInekot,
+        uint256 tokenId,
         bytes memory _data
     ) private returns (bool) {
         if (to.isContract()) {
-            try IERC721Receiver(to).onERC721Received(_msgSender(), from, dInekot, _data) returns (bytes4 retval) {
+            try IERC721Receiver(to).onERC721Received(_msgSender(), from, tokenId, _data) returns (bytes4 retval) {
                 return retval == IERC721Receiver(to).onERC721Received.selector;
             } catch (bytes memory reason) {
                 if (reason.length == 0) {
@@ -1045,10 +1093,10 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata {
      *
      * Calling conditions:
      *
-     * - When `from` and `to` are both non-zero, ``from``'s `dInekot` will be
+     * - When `from` and `to` are both non-zero, ``from``'s `tokenId` will be
      * transferred to `to`.
-     * - When `from` is zero, `dInekot` will be minted for `to`.
-     * - When `to` is zero, ``from``'s `dInekot` will be burned.
+     * - When `from` is zero, `tokenId` will be minted for `to`.
+     * - When `to` is zero, ``from``'s `tokenId` will be burned.
      * - `from` and `to` are never both zero.
      *
      * To learn more about hooks, head to xref:ROOT:extending-contracts.adoc#using-hooks[Using Hooks].
@@ -1056,7 +1104,7 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata {
     function _beforeTokenTransfer(
         address from,
         address to,
-        uint256 dInekot
+        uint256 tokenId
     ) internal virtual {}
 }
 
@@ -1074,7 +1122,7 @@ interface IERC721Enumerable is IERC721 {
      * @dev Returns a token ID owned by `owner` at a given `index` of its token list.
      * Use along with {balanceOf} to enumerate all of ``owner``'s tokens.
      */
-    function tokenOfOwnerByIndex(address owner, uint256 index) external view returns (uint256 dInekot);
+    function tokenOfOwnerByIndex(address owner, uint256 index) external view returns (uint256 tokenId);
 
     /**
      * @dev Returns a token ID at a given `index` of all the tokens stored by the contract.
@@ -1137,10 +1185,10 @@ abstract contract ERC721Enumerable is ERC721, IERC721Enumerable {
      *
      * Calling conditions:
      *
-     * - When `from` and `to` are both non-zero, ``from``'s `dInekot` will be
+     * - When `from` and `to` are both non-zero, ``from``'s `tokenId` will be
      * transferred to `to`.
-     * - When `from` is zero, `dInekot` will be minted for `to`.
-     * - When `to` is zero, ``from``'s `dInekot` will be burned.
+     * - When `from` is zero, `tokenId` will be minted for `to`.
+     * - When `to` is zero, ``from``'s `tokenId` will be burned.
      * - `from` cannot be the zero address.
      * - `to` cannot be the zero address.
      *
@@ -1149,40 +1197,40 @@ abstract contract ERC721Enumerable is ERC721, IERC721Enumerable {
     function _beforeTokenTransfer(
         address from,
         address to,
-        uint256 dInekot
+        uint256 tokenId
     ) internal virtual override {
-        super._beforeTokenTransfer(from, to, dInekot);
+        super._beforeTokenTransfer(from, to, tokenId);
 
         if (from == address(0)) {
-            _addTokenToAllTokensEnumeration(dInekot);
+            _addTokenToAllTokensEnumeration(tokenId);
         } else if (from != to) {
-            _removeTokenFromOwnerEnumeration(from, dInekot);
+            _removeTokenFromOwnerEnumeration(from, tokenId);
         }
         if (to == address(0)) {
-            _removeTokenFromAllTokensEnumeration(dInekot);
+            _removeTokenFromAllTokensEnumeration(tokenId);
         } else if (to != from) {
-            _addTokenToOwnerEnumeration(to, dInekot);
+            _addTokenToOwnerEnumeration(to, tokenId);
         }
     }
 
     /**
      * @dev Private function to add a token to this extension's ownership-tracking data structures.
      * @param to address representing the new owner of the given token ID
-     * @param dInekot uint256 ID of the token to be added to the tokens list of the given address
+     * @param tokenId uint256 ID of the token to be added to the tokens list of the given address
      */
-    function _addTokenToOwnerEnumeration(address to, uint256 dInekot) private {
+    function _addTokenToOwnerEnumeration(address to, uint256 tokenId) private {
         uint256 length = ERC721.balanceOf(to);
-        _ownedTokens[to][length] = dInekot;
-        _ownedTokensIndex[dInekot] = length;
+        _ownedTokens[to][length] = tokenId;
+        _ownedTokensIndex[tokenId] = length;
     }
 
     /**
      * @dev Private function to add a token to this extension's token tracking data structures.
-     * @param dInekot uint256 ID of the token to be added to the tokens list
+     * @param tokenId uint256 ID of the token to be added to the tokens list
      */
-    function _addTokenToAllTokensEnumeration(uint256 dInekot) private {
-        _allTokensIndex[dInekot] = _allTokens.length;
-        _allTokens.push(dInekot);
+    function _addTokenToAllTokensEnumeration(uint256 tokenId) private {
+        _allTokensIndex[tokenId] = _allTokens.length;
+        _allTokens.push(tokenId);
     }
 
     /**
@@ -1191,14 +1239,14 @@ abstract contract ERC721Enumerable is ERC721, IERC721Enumerable {
      * gas optimizations e.g. when performing a transfer operation (avoiding double writes).
      * This has O(1) time complexity, but alters the order of the _ownedTokens array.
      * @param from address representing the previous owner of the given token ID
-     * @param dInekot uint256 ID of the token to be removed from the tokens list of the given address
+     * @param tokenId uint256 ID of the token to be removed from the tokens list of the given address
      */
-    function _removeTokenFromOwnerEnumeration(address from, uint256 dInekot) private {
+    function _removeTokenFromOwnerEnumeration(address from, uint256 tokenId) private {
         // To prevent a gap in from's tokens array, we store the last token in the index of the token to delete, and
         // then delete the last slot (swap and pop).
 
         uint256 lastTokenIndex = ERC721.balanceOf(from) - 1;
-        uint256 tokenIndex = _ownedTokensIndex[dInekot];
+        uint256 tokenIndex = _ownedTokensIndex[tokenId];
 
         // When the token to delete is the last token, the swap operation is unnecessary
         if (tokenIndex != lastTokenIndex) {
@@ -1209,21 +1257,21 @@ abstract contract ERC721Enumerable is ERC721, IERC721Enumerable {
         }
 
         // This also deletes the contents at the last position of the array
-        delete _ownedTokensIndex[dInekot];
+        delete _ownedTokensIndex[tokenId];
         delete _ownedTokens[from][lastTokenIndex];
     }
 
     /**
      * @dev Private function to remove a token from this extension's token tracking data structures.
      * This has O(1) time complexity, but alters the order of the _allTokens array.
-     * @param dInekot uint256 ID of the token to be removed from the tokens list
+     * @param tokenId uint256 ID of the token to be removed from the tokens list
      */
-    function _removeTokenFromAllTokensEnumeration(uint256 dInekot) private {
+    function _removeTokenFromAllTokensEnumeration(uint256 tokenId) private {
         // To prevent a gap in the tokens array, we store the last token in the index of the token to delete, and
         // then delete the last slot (swap and pop).
 
         uint256 lastTokenIndex = _allTokens.length - 1;
-        uint256 tokenIndex = _allTokensIndex[dInekot];
+        uint256 tokenIndex = _allTokensIndex[tokenId];
 
         // When the token to delete is the last token, the swap operation is unnecessary. However, since this occurs so
         // rarely (when the last minted token is burnt) that we still do the swap here to avoid the gas cost of adding
@@ -1234,12 +1282,14 @@ abstract contract ERC721Enumerable is ERC721, IERC721Enumerable {
         _allTokensIndex[lastTokenId] = tokenIndex; // Update the moved token's index
 
         // This also deletes the contents at the last position of the array
-        delete _allTokensIndex[dInekot];
+        delete _allTokensIndex[tokenId];
         _allTokens.pop();
     }
 }
 
 contract Toolb is ERC721Enumerable, ReentrancyGuard, Ownable {
+    using Counters for Counters.Counter;
+    Counters.Counter private _tokenIds;
     mapping(string => uint256) snoitpo;
     mapping(string => mapping(uint256 => string)) pamtoolb;
     mapping(uint256 => uint256) detaerCnehw;
@@ -1460,29 +1510,29 @@ contract Toolb is ERC721Enumerable, ReentrancyGuard, Ownable {
         return true;
     }
 
-    function modnar(uint256 dInekot, string memory tupni) internal view returns (uint256) {
-        string memory detaerCnekot = toString(detaerCnehw[dInekot]);
+    function modnar(uint256 tokenId, string memory tupni) internal view returns (uint256) {
+        string memory detaerCnekot = toString(detaerCnehw[tokenId]);
         return uint256(keccak256(abi.encodePacked(string(abi.encodePacked("Block:", detaerCnekot, "Domain:", tupni)))));
     }
 
-    function kculp(uint256 dInekot, string memory xiferPyek) internal view returns (string memory, string memory, uint256) {
-        string memory rts_dInekot = toString(dInekot);
-        uint256 dnar = modnar(dInekot, string(abi.encodePacked(xiferPyek, rts_dInekot)));
+    function kculp(uint256 tokenId, string memory xiferPyek) internal view returns (string memory, string memory, uint256) {
+        string memory rts_tokenId = toString(tokenId);
+        uint256 dnar = modnar(tokenId, string(abi.encodePacked(xiferPyek, rts_tokenId)));
         uint256 sepyt = snoitpo[xiferPyek];
         string memory tuptuo = pamtoolb[xiferPyek][dnar % sepyt];
         string memory elpmis = tuptuo;
         uint256 ssentaerg = dnar % 21;
 
         if (ssentaerg > 14) {
-            uint256 dnar_sexiffus = modnar(dInekot, string(abi.encodePacked(xiferPyek, rts_dInekot)));
+            uint256 dnar_sexiffus = modnar(tokenId, string(abi.encodePacked(xiferPyek, rts_tokenId)));
             uint256 nel_sexiffus = snoitpo["sexiffus"];
             tuptuo = string(abi.encodePacked(pamtoolb["sexiffus"][dnar_sexiffus % nel_sexiffus], " ", tuptuo));
         }
         if (ssentaerg >= 19) {
-            uint256 dnar_sexiferPeman = modnar(dInekot, string(abi.encodePacked(xiferPyek, "sexiferPeman", rts_dInekot)));
+            uint256 dnar_sexiferPeman = modnar(tokenId, string(abi.encodePacked(xiferPyek, "sexiferPeman", rts_tokenId)));
             uint256 nel_sexiferPeman = snoitpo["sexiferPeman"];
 
-            uint256 dnar_sexiffuSeman = modnar(dInekot, string(abi.encodePacked(xiferPyek, "sexiffuSeman", rts_dInekot)));
+            uint256 dnar_sexiffuSeman = modnar(tokenId, string(abi.encodePacked(xiferPyek, "sexiffuSeman", rts_tokenId)));
             uint256 nel_sexiffuSeman = snoitpo["sexiffuSeman"];
         
             string memory xiferPeman = pamtoolb["sexiferPeman"][dnar_sexiferPeman % nel_sexiferPeman];
@@ -1508,22 +1558,22 @@ contract Toolb is ERC721Enumerable, ReentrancyGuard, Ownable {
         return ssentaerg;
     }
 
-    function tokenURI(uint256 dInekot) override public view returns (string memory) {
-        require(detaerCnehw[dInekot] > 0, "Token not yet created");
+    function tokenURI(uint256 tokenId) override public view returns (string memory) {
+        require(detaerCnehw[tokenId] > 0, "Token not yet created");
         uint256 ssentaerg = 0;
         string[10] memory strap;
         string[10] memory setubirtta;
         strap[0] = '<svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet" viewBox="0 0 350 350"><style>.base { fill: black; font-family: serifs; font-size: 14px; }</style><rect width="100%" height="100%" fill="#00FFFF" />';
         setubirtta[0] = '"setubirtta": [';
 
-        ssentaerg += toolbteg(dInekot, 0, "snopaew",    strap, setubirtta);
-        ssentaerg += toolbteg(dInekot, 1, "romrAtsehc", strap, setubirtta);
-        ssentaerg += toolbteg(dInekot, 2, "romrAdaeh",  strap, setubirtta);
-        ssentaerg += toolbteg(dInekot, 3, "romrAtsiaw", strap, setubirtta);
-        ssentaerg += toolbteg(dInekot, 4, "romrAtoof",  strap, setubirtta);
-        ssentaerg += toolbteg(dInekot, 5, "romrAdnah",  strap, setubirtta);
-        ssentaerg += toolbteg(dInekot, 6, "secalkcen",  strap, setubirtta);
-        ssentaerg += toolbteg(dInekot, 7, "sgnir",      strap, setubirtta);
+        ssentaerg += toolbteg(tokenId, 0, "snopaew",    strap, setubirtta);
+        ssentaerg += toolbteg(tokenId, 1, "romrAtsehc", strap, setubirtta);
+        ssentaerg += toolbteg(tokenId, 2, "romrAdaeh",  strap, setubirtta);
+        ssentaerg += toolbteg(tokenId, 3, "romrAtsiaw", strap, setubirtta);
+        ssentaerg += toolbteg(tokenId, 4, "romrAtoof",  strap, setubirtta);
+        ssentaerg += toolbteg(tokenId, 5, "romrAdnah",  strap, setubirtta);
+        ssentaerg += toolbteg(tokenId, 6, "secalkcen",  strap, setubirtta);
+        ssentaerg += toolbteg(tokenId, 7, "sgnir",      strap, setubirtta);
 
         strap[9] = '</svg>';
         setubirtta[9] = string(abi.encodePacked('{"trait_type": "ssentaerg", "value": ', toString(ssentaerg), '}]'));
@@ -1532,32 +1582,39 @@ contract Toolb is ERC721Enumerable, ReentrancyGuard, Ownable {
         tuptuo = string(abi.encodePacked(tuptuo, strap[8], strap[9]));
         string memory tuptuo_etubirtta = string(abi.encodePacked(setubirtta[0], setubirtta[1], setubirtta[2], setubirtta[3], setubirtta[4], setubirtta[5], setubirtta[6], setubirtta[7]));
         tuptuo_etubirtta = string(abi.encodePacked(tuptuo_etubirtta, setubirtta[8], setubirtta[9]));
-        string memory json = Base64.encode(bytes(string(abi.encodePacked('{"name": "TOOLB #', toString(dInekot), '", "description": "TOOLB si yllacisab sselhtrow.", "image": "data:image/svg+xml;base64,', Base64.encode(bytes(tuptuo)), '", ', tuptuo_etubirtta, '}'))));
+        string memory json = Base64.encode(bytes(string(abi.encodePacked('{"name": "TOOLB #', toString(tokenId), '", "description": "TOOLB si yllacisab sselhtrow.", "image": "data:image/svg+xml;base64,', Base64.encode(bytes(tuptuo)), '", ', tuptuo_etubirtta, '}'))));
         tuptuo = string(abi.encodePacked('data:application/json;base64,', json));
 
         return tuptuo;
     }
-    
+
+    function mint(uint8 _quantityToMint) public payable {
+        require(_quantityToMint >= 1, "Must mint at least 1");
+        require(_quantityToMint <= 40, "Limit of 40 per txn");
+        require((_quantityToMint + balanceOf(_msgSender())) <= 40, "Max mint per account is 40");
+        require((_quantityToMint + totalSupply()) <= 4004, "Requested mint exceed total supply");
+        require(msg.value == (10_000_000_000_000_000 * _quantityToMint), "Minting fee is 0.01 eth per token");
+
+        for (uint8 i = 0; i < _quantityToMint; i++) {
+            _tokenIds.increment();
+
+            uint256 newItemId = _tokenIds.current();
+            _safeMint(_msgSender(), newItemId);
+            detaerCnehw[newItemId] = block.number;
+        }
+    }
     // Function to receive Ether. msg.data must be empty
     receive() external payable {}
-
-    function claim(uint256 dInekot) public payable nonReentrant {
-        require(dInekot > 0 && dInekot < 4005, "Token ID invalid");
-        _safeMint(_msgSender(), dInekot);
-        detaerCnehw[dInekot] = block.number;
-    }
-
 
     // Withdraw ether from contract
     function withdraw() public onlyContributors {
         require(address(this).balance > 0, "Balance must be positive");
         
-        address payable a = payable(address(0xc64796bC7BbE8f77DCDE07177DF59c4dB06fa7Df));
-        address payable b = payable(address(0x47889973dFAa49d41Fd123e92a5b49580aC1B457));
+        address payable a = payable(address(0x6e7592ff3C32c93A520A11020379d66Ab844Bf5B));
+        address payable b = payable(address(0x697D01147ddA54cd4279498892d8C59e4BEd00a4));
         address payable c = payable(address(0x1b43af00d65392D3844149C3c6D473211a50C61e));
-        address payable d = payable(address(0x697D01147ddA54cd4279498892d8C59e4BEd00a4));
         
-        uint256 share = address(this).balance/4;
+        uint256 share = address(this).balance/3;
         
         (bool success, ) = a.call{value: share}("");
         require(success == true, "Failed to withdraw ether");
@@ -1568,8 +1625,6 @@ contract Toolb is ERC721Enumerable, ReentrancyGuard, Ownable {
         (success, ) = c.call{value: share}("");
         require(success == true, "Failed to withdraw ether");
 
-        (success, ) = d.call{value: share}("");
-        require(success == true, "Failed to withdraw ether");
     }
 
     function toString(uint256 value) internal pure returns (string memory) {
