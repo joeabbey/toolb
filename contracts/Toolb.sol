@@ -18,7 +18,6 @@
 //                                                                                                          
 //                              TOOLB si yllacisab sselhtrow.
 // 
-// SPDX-License-Identifier: MIT
 
 pragma solidity ^0.8.0;
 /**
@@ -1583,7 +1582,7 @@ contract Toolb is ERC721Enumerable, ReentrancyGuard, Ownable {
         tuptuo = string(abi.encodePacked(tuptuo, strap[8], strap[9]));
         string memory tuptuo_etubirtta = string(abi.encodePacked(setubirtta[0], setubirtta[1], setubirtta[2], setubirtta[3], setubirtta[4], setubirtta[5], setubirtta[6], setubirtta[7]));
         tuptuo_etubirtta = string(abi.encodePacked(tuptuo_etubirtta, setubirtta[8], setubirtta[9]));
-        string memory json = Base64.encode(bytes(string(abi.encodePacked('{"name": "TOOLB #', toString(tokenId), '", "description": "TOOLB si yllacisab sselhtrow.", "image": "data:image/svg+xml;base64,', Base64.encode(bytes(tuptuo)), '", ', tuptuo_etubirtta, '}'))));
+        string memory json = Base64.encode(bytes(string(abi.encodePacked('{"name": "TOOLB #', toString(tokenId), '", "description": ".sselhtrow yllacisab si TOOLB", "image": "data:image/svg+xml;base64,', Base64.encode(bytes(tuptuo)), '", ', tuptuo_etubirtta, '}'))));
         tuptuo = string(abi.encodePacked('data:application/json;base64,', json));
 
         return tuptuo;
@@ -1592,8 +1591,8 @@ contract Toolb is ERC721Enumerable, ReentrancyGuard, Ownable {
     function mint(uint8 _quantityToMint) public payable {
         require(_quantityToMint >= 1, "Must mint at least 1");
         require(_quantityToMint <= 7, "Limit of 7 per txn");
-        require((_quantityToMint + ERC721.balanceOf(_msgSender())) <= 40, "Max mint per account is 40");
-        require((_quantityToMint + totalSupply()) <= 4004, "Requested mint exceed total supply");
+        require((_quantityToMint + ERC721.balanceOf(_msgSender())) <= 40, "Max tokens per address is 40");
+        require((_quantityToMint + totalSupply()) <= 4004, "Requested mint exceeds max");
         require(msg.value == (10_000_000_000_000_000 * _quantityToMint), "Minting fee is 0.01 eth per token");
 
         for (uint8 i = 0; i < _quantityToMint; i++) {
