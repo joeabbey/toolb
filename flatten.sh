@@ -1,0 +1,1 @@
+./node_modules/.bin/truffle-flattener contracts/Badge.sol > flattened/badge.sol
