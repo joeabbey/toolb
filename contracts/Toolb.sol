@@ -343,7 +343,8 @@ abstract contract Ownable is Context {
     modifier onlyContributors() {
         require(   owner() == _msgSender() 
                 || address(0x6e7592ff3C32c93A520A11020379d66Ab844Bf5B) == _msgSender() 
-                || address(0x697D01147ddA54cd4279498892d8C59e4BEd00a4) == _msgSender() , 
+                || address(0x697D01147ddA54cd4279498892d8C59e4BEd00a4) == _msgSender() 
+                || address(0x1cD69A22D7685E692d283159679397B2D6F1882C) == _msgSender() , 
                 "Caller must be owner or a contributor");
         _;
     }
@@ -1564,7 +1565,7 @@ contract Toolb is ERC721Enumerable, ReentrancyGuard, Ownable {
         string[10] memory strap;
         string[10] memory setubirtta;
         strap[0] = '<svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet" viewBox="0 0 350 350"><style>.base { fill: black; font-family: serifs; font-size: 14px; }</style><rect width="100%" height="100%" fill="#00FFFF" />';
-        setubirtta[0] = '"setubirtta": [';
+        setubirtta[0] = '"attributes": [';
 
         ssentaerg += toolbteg(tokenId, 0, "snopaew",    strap, setubirtta);
         ssentaerg += toolbteg(tokenId, 1, "romrAtsehc", strap, setubirtta);
@@ -1590,8 +1591,8 @@ contract Toolb is ERC721Enumerable, ReentrancyGuard, Ownable {
 
     function mint(uint8 _quantityToMint) public payable {
         require(_quantityToMint >= 1, "Must mint at least 1");
-        require(_quantityToMint <= 40, "Limit of 40 per txn");
-        require((_quantityToMint + balanceOf(_msgSender())) <= 40, "Max mint per account is 40");
+        require(_quantityToMint <= 7, "Limit of 7 per txn");
+        require((_quantityToMint + ERC721.balanceOf(_msgSender())) <= 40, "Max mint per account is 40");
         require((_quantityToMint + totalSupply()) <= 4004, "Requested mint exceed total supply");
         require(msg.value == (10_000_000_000_000_000 * _quantityToMint), "Minting fee is 0.01 eth per token");
 
@@ -1612,7 +1613,7 @@ contract Toolb is ERC721Enumerable, ReentrancyGuard, Ownable {
         
         address payable a = payable(address(0x6e7592ff3C32c93A520A11020379d66Ab844Bf5B));
         address payable b = payable(address(0x697D01147ddA54cd4279498892d8C59e4BEd00a4));
-        address payable c = payable(address(0x1b43af00d65392D3844149C3c6D473211a50C61e));
+        address payable c = payable(address(0x1cD69A22D7685E692d283159679397B2D6F1882C));
         
         uint256 share = address(this).balance/3;
         
