@@ -41,7 +41,7 @@ module.exports = {
     live: {
       network_id: 1,
       provider: function () {
-        return new HDWalletProvider(MNEMONIC, mainnetNodeUrl, 3);
+        return new HDWalletProvider(MNEMONIC, mainnetNodeUrl, 7);
       },
       gas: 9000000,
       gasPrice: 100000000000,
